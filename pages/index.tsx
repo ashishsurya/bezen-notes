@@ -65,7 +65,7 @@ const Home: NextPage = () => {
       <main>
         <TopBar />
         <AddNoteFab createNote={handleOpenNewNote} />
-        {pinnedNotes.length > 0 && (
+        {pinnedNotes && pinnedNotes.length > 0 && (
           <NotesWrapper
             title='Pinned Notes'
             notes={pinnedNotes}
