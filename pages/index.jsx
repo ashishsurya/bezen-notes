@@ -37,10 +37,10 @@ const Home = () => {
   };
 
   const handleClose = () => setOpen(false);
-  const [title, setTitle] = useState<string>('');
-  const [tagline, setTagline] = useState<string>('');
-  const [body, setBody] = useState<string>('');
-  const [pinned, setPinned] = useState<boolean>(false);
+  const [title, setTitle] = useState('');
+  const [tagline, setTagline] = useState('');
+  const [body, setBody] = useState('');
+  const [pinned, setPinned] = useState(false);
 
   // initial fetching of pinned notes
   useEffect(() => {
