@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import styles from '../../styles/TopBar.module.scss';
-const TopBar: React.FC = () => {
+const TopBar = () => {
   return (
     <div className={styles.topbar}>
       <Image

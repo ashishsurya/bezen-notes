@@ -2,18 +2,7 @@ import styles from '../../styles/NoteCard.module.scss';
 import PinOutlineIcon from './PinOutlineIcon';
 import PinSolidIcon from './PinSolidIcon';
 
-export interface Note {
-  _id: string;
-  title: string;
-  tagline: string;
-  body: string;
-  pinned: boolean;
-}
-
-const NoteCard: React.FC<{
-  note: Note;
-  handleOpenNote: (note: Note) => void;
-}> = ({ note, handleOpenNote }) => {
+const NoteCard = ({ note, handleOpenNote }) => {
   return (
     <div className={styles.notecard} onClick={() => handleOpenNote(note)}>
       <div className={styles.notecard__header}>

@@ -1,5 +1,4 @@
 import { Modal } from '@mui/material';
-import type { NextPage } from 'next';
 import Head from 'next/head';
 import { useEffect, useState } from 'react';
 import styles from '../styles/Home.module.scss';
@@ -9,11 +8,11 @@ import NotesWrapper from './components/NotesWrapper';
 import TopBar from './components/TopBar';
 import PopUpModal from './PopUpModal';
 
-const Home: NextPage = () => {
-  const [pinnedNotes, setPinnedNotes] = useState<Note[]>([]);
-  const [page, setPage] = useState<number>(1);
-  const [pageCount, setPageCount] = useState<number>(0);
-  const [editable, setEditable] = useState<boolean>(false);
+const Home = () => {
+  const [pinnedNotes, setPinnedNotes] = useState([]);
+  const [page, setPage] = useState(1);
+  const [pageCount, setPageCount] = useState(0);
+  const [editable, setEditable] = useState(false);
 
   // pop-up modal state
   const [open, setOpen] = useState(false);
@@ -28,7 +27,7 @@ const Home: NextPage = () => {
   };
 
   // handler when clicked on note
-  const handleOpenNote = (note: Note) => {
+  const handleOpenNote = (note) => {
     setTitle(note.title);
     setTagline(note.tagline);
     setBody(note.body);

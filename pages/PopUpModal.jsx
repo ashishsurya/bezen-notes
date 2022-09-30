@@ -1,15 +1,14 @@
 import { setUncaughtExceptionCaptureCallback } from 'process';
 import { Dispatch, SetStateAction } from 'react';
 import styles from '../styles/PopUpModal.module.scss';
-const PopUpModal: React.FC<{
-  title: string;
-  setTitle: Dispatch<SetStateAction<string>>;
-  tagline: string;
-  setTagline: Dispatch<SetStateAction<string>>;
-  body: string;
-  setBody: Dispatch<SetStateAction<string>>;
-  editable:boolean
-}> = ({ title, setTitle, tagline, setTagline, body, setBody }) => {
+const PopUpModal = ({
+  title,
+  setTitle,
+  tagline,
+  setTagline,
+  body,
+  setBody,
+}) => {
   // correct the input styling
   return (
     <div className={styles.modalWrapper}>
