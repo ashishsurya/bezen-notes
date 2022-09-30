@@ -6,7 +6,7 @@ const NotesWrapper = ({ title, notes, handleOpenNote }) => {
     <div className={styles.noteswrapper}>
       <h1>{title}</h1>
       <div className={styles.notescontainer}>
-        {notes.map((note) => (
+        {notes?.map((note) => (
           <NoteCard
             note={note}
             key={note._id}
