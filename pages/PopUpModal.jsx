@@ -1,5 +1,4 @@
-import { setUncaughtExceptionCaptureCallback } from 'process';
-import { Dispatch, SetStateAction } from 'react';
+import { Checkbox, FormControlLabel } from '@mui/material';
 import styles from '../styles/PopUpModal.module.scss';
 const PopUpModal = ({
   title,
@@ -8,11 +7,22 @@ const PopUpModal = ({
   setTagline,
   body,
   setBody,
+  pinned,
+  setPinned,
 }) => {
   // correct the input styling
+  console.log(pinned);
+
   return (
     <div className={styles.modalWrapper}>
       <form>
+        <FormControlLabel
+          control={
+            <Checkbox checked={pinned} onChange={(_, x) => setPinned(x)} />
+          }
+          label='Pinned'
+        />
+
         <input
           type='text'
           placeholder='Title'

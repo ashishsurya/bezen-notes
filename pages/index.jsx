@@ -16,6 +16,10 @@ const Home = ({ pinnedNotes }) => {
 
   // pop-up modal state
   const [open, setOpen] = useState(false);
+  const [title, setTitle] = useState('');
+  const [tagline, setTagline] = useState('');
+  const [body, setBody] = useState('');
+  const [pinned, setPinned] = useState(false);
   //used as handle for fab button
   const handleOpenNewNote = () => {
     setTitle('');
@@ -37,10 +41,6 @@ const Home = ({ pinnedNotes }) => {
   };
 
   const handleClose = () => setOpen(false);
-  const [title, setTitle] = useState('');
-  const [tagline, setTagline] = useState('');
-  const [body, setBody] = useState('');
-  const [pinned, setPinned] = useState(false);
 
   return (
     <div className={styles.container}>
@@ -69,6 +69,8 @@ const Home = ({ pinnedNotes }) => {
             body={body}
             setBody={setBody}
             editable={editable}
+            pinned={pinned}
+            setPinned={setPinned}
           />
         </Modal>
       </main>
