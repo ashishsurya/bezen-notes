@@ -4,7 +4,7 @@
   position: absolute;
   background-color: #3a3a3a;
   width: 90%;
-  height: 300px;
+  height: 350px;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -29,6 +29,17 @@
       border: none;
       outline: none !important;
     }
+  }
+
+  button{
+    align-self: flex-end;
+    background: #FFC007;
+    color: white;
+    border: none;
+    cursor: pointer;
+    padding: 5px 10px;
+    border-radius: 10px;
+    font-size: larger;
   }
 
   @media screen and (min-width: $sm) {

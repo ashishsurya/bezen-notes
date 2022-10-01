@@ -1,4 +1,4 @@
-import { Checkbox, FormControlLabel } from '@mui/material';
+import { Checkbox, FormControlLabel, Input, TextField } from '@mui/material';
 import styles from '../styles/PopUpModal.module.scss';
 const PopUpModal = ({
   title,
@@ -9,6 +9,7 @@ const PopUpModal = ({
   setBody,
   pinned,
   setPinned,
+  editable
 }) => {
   // correct the input styling
   console.log(pinned);
@@ -24,7 +25,6 @@ const PopUpModal = ({
         />
 
         <input
-          type='text'
           placeholder='Title'
           value={title}
           onChange={(e) => setTitle(e.target.value)}
@@ -36,12 +36,16 @@ const PopUpModal = ({
           onChange={(e) => setTagline(e.target.value)}
         />
         <textarea
+          multiline
           placeholder='Note it here'
           cols={30}
           rows={5}
           value={body}
           onChange={(e) => setBody(e.target.value)}
         ></textarea>
+        <button>
+          {editable ? "Save" : "Create"}
+        </button>
       </form>
     </div>
   );
