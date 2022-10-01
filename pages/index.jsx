@@ -2,14 +2,14 @@ import { Modal } from '@mui/material';
 import Head from 'next/head';
 import { useEffect, useState } from 'react';
 import styles from '../styles/Home.module.scss';
+import connectMongoose from '../utils/connectMongo';
 import AddNoteFab from './components/AddNoteFab';
-import { Note } from './components/NoteCard';
 import NotesWrapper from './components/NotesWrapper';
 import TopBar from './components/TopBar';
 import PopUpModal from './PopUpModal';
+import Note from '../models/Note';
 
-const Home = () => {
-  const [pinnedNotes, setPinnedNotes] = useState([]);
+const Home = ({ pinnedNotes }) => {
   const [page, setPage] = useState(1);
   const [pageCount, setPageCount] = useState(0);
   const [editable, setEditable] = useState(false);
@@ -42,17 +42,6 @@ const Home = () => {
   const [body, setBody] = useState('');
   const [pinned, setPinned] = useState(false);
 
-  // initial fetching of pinned notes
-  useEffect(() => {
-    const fetchPinnedNotes = () => {
-      fetch('/api/get-pinned-notes')
-        .then((res) => res.json())
-        .then((data) => setPinnedNotes(data.notes));
-    };
-
-    fetchPinnedNotes();
-  }, []);
-
   return (
     <div className={styles.container}>
       <Head>
@@ -64,10 +53,10 @@ const Home = () => {
       <main>
         <TopBar />
         <AddNoteFab createNote={handleOpenNewNote} />
-        {pinnedNotes && pinnedNotes.length > 0 && (
+        {JSON.parse(pinnedNotes) && JSON.parse(pinnedNotes).length > 0 && (
           <NotesWrapper
             title='Pinned Notes'
-            notes={pinnedNotes}
+            notes={JSON.parse(pinnedNotes)}
             handleOpenNote={handleOpenNote}
           />
         )}
@@ -86,5 +75,16 @@ const Home = () => {
     </div>
   );
 };
+
+export async function getServerSideProps() {
+  await connectMongoose();
+  const pinnedNotes = await Note.find({ pinned: true });
+  console.log(pinnedNotes);
+  return {
+    props: {
+      pinnedNotes: JSON.stringify(pinnedNotes),
+    },
+  };
+}
 
 export default Home;
