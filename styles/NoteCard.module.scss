@@ -4,6 +4,7 @@
   border-radius: 30px;
   display: flex !important;
   flex-direction: column;
+  height: fit-content;
   cursor: pointer;
   small {
     border: 1px solid;
@@ -15,9 +16,14 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    svg {
-      width: 30px;
-      height: 30px;
-    }
+    
+  }
+  svg {
+    width: 30px;
+    height: 30px;
+  }
+
+  p{
+    white-space: pre;
   }
 }

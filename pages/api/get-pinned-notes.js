@@ -11,6 +11,6 @@ export default async function getPinnedNotes(req, res) {
     const notes = await Note.find({ pinned: true }).then((data) => data);
     return res.json({ notes });
   } catch (error) {
-    return res.json({ notes: [], error: error.message });
+    return res.json({ error: error.message });
   }
 }
