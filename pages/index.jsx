@@ -1,6 +1,6 @@
 import { Modal } from '@mui/material';
 import Head from 'next/head';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import styles from '../styles/Home.module.scss';
 import connectMongoose from '../utils/connectMongo';
 import AddNoteFab from './components/AddNoteFab';
@@ -10,6 +10,7 @@ import PopUpModal from './PopUpModal';
 import Note from '../models/Note';
 import PrevIcon from '../pages/components/PrevIcon';
 import NextIcon from '../pages/components/NextIcon';
+import { useToasts } from 'react-toast-notifications';
 
 export const NOTES_PER_PAGE = 6;
 
@@ -19,7 +20,8 @@ const Home = ({
   serverSidePinnedNotes,
   serverSideNormalNotes,
 }) => {
-  console.log(serverSideCount, serverSidePageCount);
+  const renders = useRef(0);
+  const { addToast } = useToasts();
   const [pinnedNotes, setPinnedNotes] = useState(
     JSON.parse(serverSidePinnedNotes)
   );
@@ -59,12 +61,39 @@ const Home = ({
     setOpen(true);
   };
 
+  const fetchPaginatedNormalNotes = useCallback(async () => {
+    const reqPromise = fetch(`/api/get-normal-notes?p=${page}`);
+    const data = await (await reqPromise).json();
+    if (data.error) {
+      addToast('Something went wrong', { appearance: 'error' });
+    } else if (data.notes) {
+      setNormalNotes(data.notes);
+    }
+  }, [addToast, page]);
+
+  useEffect(() => {
+    if (renders === 0) return;
+    else {
+      renders++;
+      fetchPaginatedNormalNotes();
+    }
+  }, [fetchPaginatedNormalNotes, page]);
+
   const handleClose = () => setOpen(false);
 
-  const handleNextPageClick = () => {};
+  const handleNextPageClick = () => {
+    setPage(function (prev) {
+      if (prev === pageCount) return prev;
+      return prev + 1;
+    });
+  };
 
-  const handlePrevPageClick = () => {};
-
+  const handlePrevPageClick = () => {
+    setPage((prev) => {
+      if (prev === 1) return prev;
+      return prev - 1;
+    });
+  };
   return (
     <div className={styles.container}>
       <Head>
@@ -98,12 +127,20 @@ const Home = ({
               handleOpenNote={handleOpenNote}
             />
             <div>
-              <span title='go to prev page' onClick={handlePrevPageClick}>
+              <button
+                disabled={page === 1}
+                title='go to prev page'
+                onClick={handlePrevPageClick}
+              >
                 <PrevIcon />
-              </span>
-              <span title='go to next page' onClick={handleNextPageClick}>
+              </button>
+              <button
+                disabled={page === pageCount}
+                title='go to next page'
+                onClick={handleNextPageClick}
+              >
                 <NextIcon />
-              </span>
+              </button>
             </div>
           </div>
         )}
@@ -131,9 +168,10 @@ const Home = ({
 
 export async function getServerSideProps() {
   await connectMongoose();
+  const notesSize = await Note.estimatedDocumentCount();
   const pinnedNotes = await Note.find({ pinned: true });
   const normalNotes = await Note.find({ pinned: false }).limit(NOTES_PER_PAGE);
-  const count = normalNotes.length;
+  const count = notesSize - pinnedNotes.length;
   const pageCount = Math.ceil(count / NOTES_PER_PAGE);
   return {
     props: {
